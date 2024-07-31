@@ -14,7 +14,7 @@ int main() {
     printf(">> Demo: Create and free a tensor\r\n");
 
     printf(">> Transpose 2D tensor\r\n");
-    tensor_t *tensor = tensor_create(TENSOR_INT32, 2, (uint32_t[]){3, 5});
+    tensor_t *tensor = tensor_create(TENSOR_INT32, 2, (uint32_t[]){3, 5}, (void *)0);
     for (int i = 0; i < tensor->num_elements; i++) {
         tensor->data[i].int32 = i;
     }
@@ -39,7 +39,7 @@ int main() {
 
 
     printf(">> Transpose 3D tensor\r\n");
-    tensor = tensor_create(TENSOR_INT32, 3, (uint32_t[]){3, 4, 5});
+    tensor = tensor_create(TENSOR_INT32, 3, (uint32_t[]){3, 4, 5}, (void *)0);
     for (int i = 0; i < tensor->num_elements; i++) {
         tensor->data[i].int32 = i;
     }

@@ -96,7 +96,7 @@ tensor_t *linear(tensor_t *input, linear_t *linear_weight) {
 
     // Allocate output tensor
     uint32_t shape[] = {input->shape[0], weight->shape[0]};
-    tensor_t *output = tensor_create(input->type, 2, shape);
+    tensor_t *output = tensor_create(input->type, 2, shape, (void *)0);
 
     // Calculate
     const tensor_data_t *input_data = input->data;

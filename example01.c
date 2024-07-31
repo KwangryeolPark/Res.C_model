@@ -13,7 +13,7 @@
 int main() {
     printf(">> Demo: Create and free a tensor\r\n");
     uint32_t shape[] = {2, 3, 4};
-    tensor_t *tensor = tensor_create(TENSOR_INT16, 3, shape);
+    tensor_t *tensor = tensor_create(TENSOR_INT16, 3, shape, (void *)0);
     tensor_fill_with(tensor, (tensor_data_t){.int16 = 0});
 
 

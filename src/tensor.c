@@ -43,7 +43,7 @@ uint64_t tensor_get_global_data_peak_memory() {
     return tensor_global_data_peak_memory;
 }
 
-tensor_t *tensor_create(tensor_type_t type, uint32_t ndim, uint32_t *shape) {
+tensor_t *tensor_create(tensor_type_t type, uint32_t ndim, uint32_t *shape, void *data) {
     tensor_t *tensor = (tensor_t *)malloc(sizeof(tensor_t));
     tensor->type = type;
     tensor->ndim = ndim;
@@ -53,10 +53,16 @@ tensor_t *tensor_create(tensor_type_t type, uint32_t ndim, uint32_t *shape) {
     for (int i = 0; i < ndim; i++)  tensor->transpose[i] = i;
     tensor->num_elements = 1;
     for (int i = 0; i < ndim; i++)  tensor->num_elements *= shape[i];
-    tensor->data = (tensor_data_t *)malloc(tensor->num_elements * sizeof(tensor_data_t));
-    tensor_global_data_memory += tensor_get_data_memory(tensor);
-    if (tensor_global_data_memory > tensor_global_data_peak_memory) {
-        tensor_global_data_peak_memory = tensor_global_data_memory;
+    if ((void *) data != NULL) {
+        tensor->data = (tensor_data_t *)data;
+        tensor->is_data_owner = 0;
+    } else {
+        tensor->data = (tensor_data_t *)malloc(tensor->num_elements * sizeof(tensor_data_t));
+        tensor->is_data_owner = 1;
+        tensor_global_data_memory += tensor_get_data_memory(tensor);
+        if (tensor_global_data_memory > tensor_global_data_peak_memory) {
+            tensor_global_data_peak_memory = tensor_global_data_memory;
+        }
     }
     return tensor;
 }
@@ -66,9 +72,12 @@ void tensor_free(tensor_t *tensor) {
         printf(">> [%s][%s][%d] Error: tensor_global_data_memory is less than tensor memory\r\n", __FILE__, __func__, __LINE__);
         return;
     }
-    tensor_global_data_memory -= tensor_get_data_memory(tensor);
     free(tensor->shape);
-    free(tensor->data);
+    free(tensor->transpose);
+    if (tensor->is_data_owner)  {
+        free(tensor->data);
+        tensor_global_data_memory -= tensor_get_data_memory(tensor);
+    }
     free(tensor);
 }
 

@@ -13,9 +13,9 @@
 
 int main() {
     printf(">> Demo: Create and free a tensor\r\n");
-    tensor_t *input = tensor_create(TENSOR_FLOAT32, 2, (uint32_t[]){3, 5});
-    tensor_t *weight = tensor_create(TENSOR_FLOAT32, 2, (uint32_t[]){2, 5});
-    tensor_t *bias = tensor_create(TENSOR_FLOAT32, 1, (uint32_t[]){2});
+    tensor_t *input = tensor_create(TENSOR_FLOAT32, 2, (uint32_t[]){3, 5}, (void *)0);
+    tensor_t *weight = tensor_create(TENSOR_FLOAT32, 2, (uint32_t[]){2, 5}, (void *)0);
+    tensor_t *bias = tensor_create(TENSOR_FLOAT32, 1, (uint32_t[]){2}, (void *)0);
 
     printf(">> Memory allocated by input tensor: %u bytes\r\n", tensor_get_data_memory(input));
     tensor_print_data_memory(input);
@@ -34,7 +34,8 @@ int main() {
         bias->data[i].float32 = (float)i;
     }
 
-    tensor_t *output = linear(input, weight, bias);
+    linear_t *linear_weight = linear_create(weight, bias);
+    tensor_t *output = linear(input, linear_weight);
     printf(">> Memory allocated by output tensor: %u bytes\r\n", tensor_get_data_memory(output));
     tensor_print_data_memory(output);
     tensor_print_shape(output);
@@ -42,9 +43,8 @@ int main() {
 
     printf(">> Memory allocated by tensor: %lu bytes\r\n", tensor_get_global_data_memory());
     printf(">> Free memory allocated by tensor\r\n");
+    linear_free(linear_weight, 1);
     tensor_free(input);
-    tensor_free(weight);
-    tensor_free(bias);
     tensor_free(output);
 
     printf(">> Memory allocated by tensor: %lu bytes\r\n", tensor_get_global_data_memory());

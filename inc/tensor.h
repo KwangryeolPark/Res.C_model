@@ -39,6 +39,7 @@ typedef struct {
     uint32_t *shape;
     uint32_t *transpose;    // Transpose index. The original index is the key, and the value is the new index.
     tensor_data_t *data;
+    uint8_t is_data_owner;  // If the data is the owner, it should be freed.
 } tensor_t;
 
 // Get memory functions
@@ -47,7 +48,7 @@ uint64_t tensor_get_global_data_memory();
 uint64_t tensor_get_global_data_peak_memory();
 
 // Create and free functions for each tensor type
-tensor_t *tensor_create(tensor_type_t type, uint32_t ndim, uint32_t *shape);
+tensor_t *tensor_create(tensor_type_t type, uint32_t ndim, uint32_t *shape, void *data);
 void tensor_free(tensor_t *tensor);
 
 // Set and get functions for each tensor type

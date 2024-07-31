@@ -17,9 +17,9 @@
 
 int main() {
     printf(">> Demo: Create and free a tensor\r\n");
-    tensor_t *input = tensor_create(TENSOR_FLOAT32, 2, (uint32_t[]){3, 5});
-    tensor_t *weight = tensor_create(TENSOR_FLOAT32, 2, (uint32_t[]){2, 5});
-    tensor_t *bias = tensor_create(TENSOR_FLOAT32, 1, (uint32_t[]){2});
+    tensor_t *input = tensor_create(TENSOR_FLOAT32, 2, (uint32_t[]){3, 5}, (void *)0);
+    tensor_t *weight = tensor_create(TENSOR_FLOAT32, 2, (uint32_t[]){2, 5}, (void *)0);
+    tensor_t *bias = tensor_create(TENSOR_FLOAT32, 1, (uint32_t[]){2}, (void *)0);
     linear_t *linear_weight = linear_create(weight, bias);
 
     for (int i = 0; i < input->num_elements; i++) {
@@ -40,7 +40,7 @@ int main() {
     // tensor_free(bias);
     // linear_free(linear_weight, 0);
     linear_free(linear_weight, 1);
-    
+
     tensor_free(input);
     tensor_free(output);
 

@@ -325,3 +325,18 @@ tensor_t *tensor_transpose(tensor_t *tensor, uint32_t axis1, uint32_t axis2) {
     tensor->transpose[axis2] = tmp;
     return tensor;
 }
+
+tensor_t *tensor_reshape(tensor_t *tensor, uint32_t ndim, uint32_t *shape) {
+    uint32_t num_elements = 1;
+    for (int i = 0; i < ndim; i++) {
+        num_elements *= shape[i];
+    }
+    if (num_elements != tensor->num_elements) {
+        printf("[%s][%s][%d] Error: The number of elements is not matched\r\n", __FILE__, __func__, __LINE__);
+        return NULL;
+    }
+    tensor->ndim = ndim;
+    tensor->shape = (uint32_t *)realloc(tensor->shape, ndim * sizeof(uint32_t));
+    memcpy(tensor->shape, shape, ndim * sizeof(uint32_t));
+    return tensor;
+}

@@ -75,4 +75,5 @@ void tensor_print_global_data_memory();
 tensor_t *tensor_unsqueeze(tensor_t *tensor, uint32_t axis);
 tensor_t *tensor_squeeze(tensor_t *tensor, uint32_t axis);
 tensor_t *tensor_transpose(tensor_t *tensor, uint32_t axis1, uint32_t axis2);
+tensor_t *tensor_reshape(tensor_t *tensor, uint32_t ndim, uint32_t *shape);
 #endif // _TENSOR_H

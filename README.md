@@ -14,8 +14,10 @@
 * reshape (검증 필요)
 
 # 지원될 목록
+* linear 연산에서 bias가 없을 때
 * conv1d
 * conv2d
+
 
 # 그 외
 필요한 연산자(기능)가 있다면, Issues에 등록 부탁드립니다. (PyTorch 코드도 캡쳐)

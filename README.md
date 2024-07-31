@@ -12,12 +12,12 @@
 * linear
 * 사용된 memory 계산
 * reshape (검증 필요)
+* BatchNorm2d (검증 필요)
 
 # 지원될 목록
 * tensor를 생성할 때 data는 초기화 하지 않는 코드. -> weight 같은 경우, 이미 data를 위한 공간이 할당돼 있기 때문에 또 할당할 필요는 없음.
 * linear 연산에서 bias가 없을 때
 * conv2d    weight: (out_channels x in_channels x Kernel_h x Kernel_w)으로 돼 있음. bias: (out_channels)
-* BatchNorms
 
 
 # 그 외

@@ -218,9 +218,10 @@ void tensor_print_dim(tensor_t *tensor) {
     printf(">> tensor dim: %d\r\n", tensor->ndim);
 }
 
+// Shape transformation
 tensor_t *tensor_unsqueeze(tensor_t *tensor, uint32_t axis) {
     if (axis > tensor->ndim) {
-        printf("axis is out of range\r\n");
+        printf("[%s][%s][%d] axis is out of range\r\n", __FILE__, __func__, __LINE__);
         return NULL;
     }
     // Reallocate shape using realloc
@@ -238,13 +239,14 @@ tensor_t *tensor_unsqueeze(tensor_t *tensor, uint32_t axis) {
     return tensor;
 }
 
+// Squeeze
 tensor_t *tensor_squeeze(tensor_t *tensor, uint32_t axis) {
     if (axis >= tensor->ndim) {
-        printf("axis is out of range\r\n");
+        printf("[%s][%s][%d] axis is out of range\r\n", __FILE__, __func__, __LINE__);
         return NULL;
     }
     if (tensor->shape[axis] != 1) {
-        printf("The shape at the axis is not 1\r\n");
+        printf("[%s][%s][%d] The shape at the axis is not 1\r\n", __FILE__, __func__, __LINE__);
         return NULL;
     }
     // Reallocate shape using realloc
@@ -268,7 +270,7 @@ tensor_t *tensor_squeeze(tensor_t *tensor, uint32_t axis) {
 // The actual compute of index in done in tensor_convert_nd_to_1d_index function.
 tensor_t *tensor_transpose(tensor_t *tensor, uint32_t axis1, uint32_t axis2) {
     if (axis1 >= tensor->ndim || axis2 >= tensor->ndim) {
-        printf("axis is out of range\r\n");
+        printf("[%s][%s][%d] axis is out of range\r\n", __FILE__, __func__, __LINE__);
         return NULL;
     }
     uint32_t tmp = tensor->shape[axis1];

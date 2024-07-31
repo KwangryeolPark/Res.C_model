@@ -140,7 +140,7 @@ uint32_t tensor_convert_nd_to_1d_index(tensor_t *tensor, uint32_t *indics) {
 
     for (int i = 0; i < ndim; i++) {
         if (indics[i] >= tensor->shape[i]) {
-            printf(">> [%s][%s][%d] Error: index is out of range\r\n", __FILE__, __func__, __LINE__);
+            printf("[%s][%s][%d] Error: index is out of range\r\n", __FILE__, __func__, __LINE__);
             return -1;
         }
     }

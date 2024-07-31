@@ -13,6 +13,8 @@ The data is the array of the flatten tensor data.
 
 #include <stdint.h>
 
+extern uint64_t tensor_global_data_memory;   // Global variable to store the total memory allocated by tensor (bytes)
+
 typedef enum {
     TENSOR_INT16,
     TENSOR_INT32,
@@ -37,6 +39,9 @@ typedef struct {
     uint32_t *transpose;    // Transpose index. The original index is the key, and the value is the new index.
     tensor_data_t *data;
 } tensor_t;
+
+uint32_t tensor_get_data_memory(tensor_t *tensor);
+uint64_t tensor_get_global_data_memory();
 
 // Create and free functions for each tensor type
 tensor_t *tensor_create(tensor_type_t type, uint32_t ndim, uint32_t *shape);
@@ -63,6 +68,8 @@ uint32_t tensor_convert_nd_to_1d_index(tensor_t *tensor, uint32_t *indices);
 void tensor_print_data(tensor_t *tensor);
 void tensor_print_shape(tensor_t *tensor);
 void tensor_print_dim(tensor_t *tensor);
+void tensor_print_data_memory(tensor_t *tensor);
+void tensor_print_global_data_memory();
 
 // Shape transformation
 tensor_t *tensor_unsqueeze(tensor_t *tensor, uint32_t axis);

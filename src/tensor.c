@@ -7,7 +7,37 @@
 #define SWAP_int32_t(a, b) {int tmp = a; a = b; b = tmp;}
 #endif
 
+uint64_t tensor_global_data_memory = 0;  // Global variable to store the total memory allocated by tensor (bytes)
+
 // Create and free functions for each tensor type
+uint32_t tensor_get_data_memory(tensor_t *tensor) {
+    uint32_t memory = 0;
+    switch (tensor->type) {
+        case TENSOR_INT16:
+            memory = tensor->num_elements * sizeof(int16_t);
+            break;
+        case TENSOR_INT32:
+            memory = tensor->num_elements * sizeof(int32_t);
+            break;
+        case TENSOR_INT64:
+            memory = tensor->num_elements * sizeof(int64_t);
+            break;
+        case TENSOR_FLOAT32:
+            memory = tensor->num_elements * sizeof(float);
+            break;
+        case TENSOR_FLOAT64:
+            memory = tensor->num_elements * sizeof(double);
+            break;
+        default:
+            printf(">> [%s][%s][%d] Error: Un-supported tensor type\r\n", __FILE__, __func__, __LINE__);
+    }
+    return memory;
+}
+
+uint64_t tensor_get_global_data_memory() {
+    return tensor_global_data_memory;
+}
+
 tensor_t *tensor_create(tensor_type_t type, uint32_t ndim, uint32_t *shape) {
     tensor_t *tensor = (tensor_t *)malloc(sizeof(tensor_t));
     tensor->type = type;
@@ -19,10 +49,16 @@ tensor_t *tensor_create(tensor_type_t type, uint32_t ndim, uint32_t *shape) {
     tensor->num_elements = 1;
     for (int i = 0; i < ndim; i++)  tensor->num_elements *= shape[i];
     tensor->data = (tensor_data_t *)malloc(tensor->num_elements * sizeof(tensor_data_t));
+    tensor_global_data_memory += (uint64_t) tensor_get_data_memory(tensor);
     return tensor;
 }
 
 void tensor_free(tensor_t *tensor) {
+    if (tensor_global_data_memory < (uint64_t) tensor_get_data_memory(tensor)) {
+        printf(">> [%s][%s][%d] Error: tensor_global_data_memory is less than tensor memory\r\n", __FILE__, __func__, __LINE__);
+        return;
+    }
+    tensor_global_data_memory -= (uint64_t) tensor_get_data_memory(tensor);
     free(tensor->shape);
     free(tensor->data);
     free(tensor);
@@ -217,6 +253,13 @@ void tensor_print_shape(tensor_t *tensor) {
 void tensor_print_dim(tensor_t *tensor) {
     printf(">> tensor dim: %d\r\n", tensor->ndim);
 }
+void tensor_print_data_memory(tensor_t *tensor) {
+    printf(">> tensor data memory: %d bytes\r\n", tensor_get_data_memory(tensor));
+}
+void tensor_print_global_data_memory() {
+    printf(">> tensor global data memory: %ld bytes\r\n", tensor_global_data_memory);
+}
+
 
 // Shape transformation
 tensor_t *tensor_unsqueeze(tensor_t *tensor, uint32_t axis) {

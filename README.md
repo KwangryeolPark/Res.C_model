@@ -10,3 +10,8 @@
 * squeeze
 * unsqueeze
 * linear
+* 사용된 memory 계싼
+
+# 지원될 목록
+* conv1d
+* conv2d

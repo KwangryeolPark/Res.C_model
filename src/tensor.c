@@ -261,6 +261,11 @@ tensor_t *tensor_squeeze(tensor_t *tensor, uint32_t axis) {
     return tensor;
 }
 
+// Tranpose.
+// Tranpose operation does not change the location of data in memory.
+// Instead, it changes the order of index to access the data.
+// The information of tranposing is stored in tensor->transpose.
+// The actual compute of index in done in tensor_convert_nd_to_1d_index function.
 tensor_t *tensor_transpose(tensor_t *tensor, uint32_t axis1, uint32_t axis2) {
     if (axis1 >= tensor->ndim || axis2 >= tensor->ndim) {
         printf("axis is out of range\r\n");

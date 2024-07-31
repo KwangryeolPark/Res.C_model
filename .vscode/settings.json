@@ -1,0 +1,13 @@
+{
+    "files.associations": {
+        "tensor.h": "c",
+        "random": "c",
+        "algorithm": "c",
+        "stdio.h": "c",
+        "array": "c",
+        "string": "c",
+        "string_view": "c",
+        "iterator": "c",
+        "vector": "c"
+    }
+}

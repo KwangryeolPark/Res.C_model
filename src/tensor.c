@@ -262,7 +262,7 @@ void tensor_print_dim(tensor_t *tensor) {
     printf(">> tensor dim: %d\r\n", tensor->ndim);
 }
 void tensor_print_data_memory(tensor_t *tensor) {
-    printf(">> tensor data memory: %d bytes\r\n", tensor_get_data_memory(tensor));
+    printf(">> tensor data memory: %ld bytes\r\n", tensor_get_data_memory(tensor));
 }
 void tensor_print_global_data_memory() {
     printf(">> tensor global data memory: %ld bytes\r\n", tensor_global_data_memory);

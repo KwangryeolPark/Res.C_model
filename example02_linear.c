@@ -20,6 +20,7 @@ int main() {
     tensor_t *input = tensor_create(TENSOR_FLOAT32, 2, (uint32_t[]){3, 5});
     tensor_t *weight = tensor_create(TENSOR_FLOAT32, 2, (uint32_t[]){2, 5});
     tensor_t *bias = tensor_create(TENSOR_FLOAT32, 1, (uint32_t[]){2});
+    linear_t *linear_weight = linear_create(weight, bias);
 
     for (int i = 0; i < input->num_elements; i++) {
         input->data[i].float32 = (float)i;
@@ -31,13 +32,11 @@ int main() {
         bias->data[i].float32 = (float)i;
     }
 
-    tensor_t *output = linear(input, weight, bias);
+    tensor_t *output = linear(input, linear_weight);
     tensor_print_shape(output);
     tensor_print_data(output);
 
-    tensor_free(input);
-    tensor_free(weight);
-    tensor_free(bias);
+    linear_free(linear_weight, 1);
     tensor_free(output);
 
     printf(">> Done\r\n");
